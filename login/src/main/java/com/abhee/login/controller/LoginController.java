@@ -39,8 +39,8 @@ public class LoginController {
 		logger.info("Info logger inside login method");
 		logger.debug("debug logger inside login method");
 		logger.warn("warn logger inside login method");
-		//logger.error("error logger inside login method");
-		//logger.trace("trace logger inside login method");
+		logger.error("error logger inside login method");
+		logger.trace("trace logger inside login method");
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("welcomeMessage", welcomeMessage+" "+configuration.getMessage());
 		modelAndView.setViewName("login");
