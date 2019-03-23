@@ -36,7 +36,7 @@ public class LoginController {
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public ModelAndView login() {
-		logger.info("Info logger inside login method printing info logger");
+		logger.info("Info logger inside login method");
 		logger.debug("debug logger inside login method");
 		logger.warn("warn logger inside login method");
 		logger.error("error logger inside login method");
@@ -68,9 +68,7 @@ public class LoginController {
 			modelAndView.setViewName("registration");
 		} else {
 			userService.saveUser(user);
-			for(int i=10;i>0;i--) {
-				logger.info(i);
-			}
+			modelAndView.addObject("successMessage", "User has been registered successfully");
 			modelAndView.addObject("user", new User());
 			modelAndView.setViewName("registration");
 
