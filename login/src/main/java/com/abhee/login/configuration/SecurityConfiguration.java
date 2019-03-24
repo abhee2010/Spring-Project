@@ -1,4 +1,5 @@
 package com.abhee.login.configuration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -16,37 +17,34 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private DataSource dataSource;
+	@Autowired
+	private DataSource dataSource;
 
-    @Value("${spring.queries.users-query}")
-    private String usersQuery;
+	@Value("${spring.queries.users-query}")
+	private String usersQuery;
 
-    @Value("${spring.queries.roles-query}")
-    private String rolesQuery;
+	@Value("${spring.queries.roles-query}")
+	private String rolesQuery;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.
-                jdbcAuthentication()
-                .usersByUsernameQuery(usersQuery)
-                .authoritiesByUsernameQuery(rolesQuery)
-                .dataSource(dataSource)
-                .passwordEncoder(bCryptPasswordEncoder);
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesQuery)
+				.dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+	}
 
-    @Override
+	@Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http.
                 authorizeRequests()
-                .antMatchers("/").permitAll().and().authorizeRequests().antMatchers("/h2/**/**").permitAll()
+                .antMatchers("/").permitAll().and().authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/h2/**").permitAll()
                 .antMatchers("/registration").permitAll()
+                .antMatchers("/load").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
@@ -57,13 +55,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").and().exceptionHandling()
                 .accessDeniedPage("/access-denied");
+       
+        // adding this line to use H2 web console
+        http.headers().frameOptions().disable();
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
-    }
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+	}
 
 }
