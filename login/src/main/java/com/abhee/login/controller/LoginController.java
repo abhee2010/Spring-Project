@@ -10,7 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -20,6 +21,8 @@ import com.abhee.login.service.UserService;
 
 @Controller
 public class LoginController {
+
+	private static final String REGISTRATION = "registration";
 
 	@Autowired
 	private UserService userService;
@@ -34,7 +37,7 @@ public class LoginController {
 
 	private static final Logger logger = LogManager.getLogger(LoginController.class);
 
-	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
+	@GetMapping(value = { "/login" })
 	public ModelAndView login() {
 		logger.info("Info logger inside login method");
 		logger.debug("debug logger inside login method");
@@ -47,16 +50,16 @@ public class LoginController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/registration", method = RequestMethod.GET)
+	@GetMapping(value = "/registration")
 	public ModelAndView registration() {
 		ModelAndView modelAndView = new ModelAndView();
 		User user = new User();
 		modelAndView.addObject("user", user);
-		modelAndView.setViewName("registration");
+		modelAndView.setViewName(REGISTRATION);
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	@PostMapping(value = "/registration")
 	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
 		User userExists = userService.findUserByEmail(user.getEmail());
@@ -65,18 +68,18 @@ public class LoginController {
 					"There is already a user registered with the email provided");
 		}
 		if (bindingResult.hasErrors()) {
-			modelAndView.setViewName("registration");
+			modelAndView.setViewName(REGISTRATION);
 		} else {
 			userService.saveUser(user);
 			modelAndView.addObject("successMessage", "User has been registered successfully");
 			modelAndView.addObject("user", new User());
-			modelAndView.setViewName("registration");
+			modelAndView.setViewName(REGISTRATION);
 
 		}
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/admin/home", method = RequestMethod.GET)
+	@GetMapping(value = "/admin/home")
 	public ModelAndView home() {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

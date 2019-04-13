@@ -17,8 +17,6 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,7 +29,7 @@ public class BatchController {
 	@Autowired
 	private Job job;
 	
-	@RequestMapping(value = { "/load" }, method = RequestMethod.GET)
+	@GetMapping(value = { "/load" })
 	public BatchStatus launchJob() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 		Map<String,JobParameter> jobParameter = new HashMap<>();
 		jobParameter.put("time", new JobParameter(System.currentTimeMillis()));

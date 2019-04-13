@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 
 import com.abhee.login.model.Employee;
 @Component
-public class ItemProcessor implements org.springframework.batch.item.ItemProcessor<Employee, Employee> {
-	private static final Logger logger = LogManager.getLogger(ItemProcessor.class);
+public class BatchItemProcessor implements org.springframework.batch.item.ItemProcessor<Employee, Employee> {
+	private static final Logger logger = LogManager.getLogger(BatchItemProcessor.class);
 	
 	private static final Map<String,String> DEPT_NAMES = new HashMap<>();
 	
-	public ItemProcessor() {
+	public BatchItemProcessor() {
 		DEPT_NAMES.put("001", "Human Resource");
 		DEPT_NAMES.put("002", "Admin");
 		DEPT_NAMES.put("003", "Information Technology");

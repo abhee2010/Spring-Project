@@ -18,7 +18,8 @@ import com.abhee.login.service.UserService;
 
 public class UserServiceTest {
 
-    @Mock
+    private static final String TEST_TEST_COM = "test@test.com";
+	@Mock
     private UserRepository mockUserRepository;
     @Mock
     private RoleRepository mockRoleRepository;
@@ -38,7 +39,7 @@ public class UserServiceTest {
                 .id(1)
                 .name("Gustavo")
                 .lastName("Ponce")
-                .email("test@test.com")
+                .email(TEST_TEST_COM)
                 .build();
 
         Mockito.when(mockUserRepository.save(any()))
@@ -50,7 +51,7 @@ public class UserServiceTest {
     @Test
     public void testFindUserByEmail() {
         // Setup
-        final String email = "test@test.com";
+        final String email = TEST_TEST_COM;
 
         // Run the test
         final User result = userServiceUnderTest.findUserByEmail(email);
@@ -62,7 +63,7 @@ public class UserServiceTest {
     @Test
     public void testSaveUser() {
         // Setup
-        final String email = "test@test.com";
+        final String email = TEST_TEST_COM;
 
         // Run the test
         User result = userServiceUnderTest.saveUser(User.builder().build());
