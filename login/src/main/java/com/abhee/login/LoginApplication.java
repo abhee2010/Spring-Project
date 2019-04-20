@@ -11,7 +11,7 @@ public class LoginApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(LoginApplication.class, args);
-		//getActiverofileName(context);	
+		getActiverofileName(context);	
 	}
 	
 	
